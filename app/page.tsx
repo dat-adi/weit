@@ -2,6 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Bot, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MacrosChart } from "@/components/macros-chart"
+import { getFoodItems } from "@/services/api";
+
+const meals = await getFoodItems();
 
 export default function Dashboard() {
   return (
@@ -19,38 +22,44 @@ export default function Dashboard() {
               Based on your recent meals, here are some suggestions to improve your nutrition:
             </p>
             <ul className="space-y-2">
-              <li className="text-sm">• Your protein intake is below target. Consider adding lean meats or legumes.</li>
+              <li className="text-sm">• Your protein intake is below target. Consider adding this to your diet: <p style={{color: "#D1623F"}}>hard-boiled eggs</p> <p style={{color: "#D1623F"}}>banana overnight oats</p> </li>
               <li className="text-sm">• Good job on meeting your fiber goals!</li>
               <li className="text-sm">• Try to include more green vegetables in your dinner.</li>
             </ul>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium">Today's Meals</CardTitle>
-            <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4" />
-              Add Meal
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium mb-2">Breakfast</h3>
-                <p className="text-sm text-muted-foreground">Oatmeal with Berries - 350 cal</p>
+      <div className="space-y-6">
+        {meals.map((meal, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle>{meal.name}</CardTitle>
+                <span className="text-sm text-muted-foreground">{meal.time}</span>
               </div>
-              <div>
-                <h3 className="font-medium mb-2">Lunch</h3>
-                <p className="text-sm text-muted-foreground">Grilled Chicken Salad - 420 cal</p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">Dinner</h3>
-                <p className="text-sm text-muted-foreground">Not logged yet</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              {meal.items.length > 0 ? (
+                <div className="space-y-4">
+                  {meal.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex justify-between items-center">
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {item.protein}g protein • {item.carbs}g carbs • {item.fat}g fat
+                        </p>
+                      </div>
+                      <p className="text-sm font-medium">{item.calories} cal</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">No meals logged yet</p>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
       </div>
 
       <Card>

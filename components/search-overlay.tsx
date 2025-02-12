@@ -71,7 +71,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
   const handleAddToLog = (itemId: string) => {
     onClose()
-    router.push(`/edit-meal/${itemId}`)
+    router.push(`/edit-meal/1`)
   }
 
   if (!isOpen) return null

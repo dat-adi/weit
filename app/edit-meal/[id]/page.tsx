@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Save } from "lucide-react"
+import { addFoodLog } from "@/services/api"
 
 interface Ingredient {
   id: number
@@ -20,6 +21,7 @@ interface Ingredient {
 
 export default function EditMeal({ params }: { params: { id: string } }) {
   const router = useRouter()
+  const [message, setMessage] = useState("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     {
       id: 1,
@@ -47,8 +49,14 @@ export default function EditMeal({ params }: { params: { id: string } }) {
     ])
   }
 
-  const handleSave = () => {
+  const handleSave = async(foodId) => {
     // Here you would typically save the meal
+    try {
+        const response = await addFoodLog(foodId);
+        setMessage(`Food log entry created with ID: ${response.entry_id}`);
+    } catch (error) {
+        setMessage("Failed to add food log.");
+    }
     router.push("/daily-log")
   }
 
@@ -56,7 +64,7 @@ export default function EditMeal({ params }: { params: { id: string } }) {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Edit Meal</h1>
-        <Button onClick={handleSave}>
+        <Button onClick={() => handleSave(4)}>
           <Save className="h-4 w-4 mr-2" />
           Add to Log
         </Button>
@@ -161,6 +169,8 @@ export default function EditMeal({ params }: { params: { id: string } }) {
           </Button>
         </CardContent>
       </Card>
+      
+      {message && <p>{message}</p>}
     </div>
   )
 }

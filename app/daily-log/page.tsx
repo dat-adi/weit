@@ -4,24 +4,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DateNavigation } from "@/components/date-navigation"
+import { getFoodItems } from "@/services/api"
 
-const meals = [
-  {
-    time: "8:00 AM",
-    name: "Breakfast",
-    items: [{ name: "Oatmeal with Berries", calories: 350, protein: 12, carbs: 60, fat: 8 }],
-  },
-  {
-    time: "12:30 PM",
-    name: "Lunch",
-    items: [{ name: "Grilled Chicken Salad", calories: 420, protein: 35, carbs: 25, fat: 22 }],
-  },
-  {
-    time: "7:00 PM",
-    name: "Dinner",
-    items: [],
-  },
-]
+// const meals = [
+//   {
+//     time: "8:00 AM",
+//     name: "Breakfast",
+//     items: [{ name: "Oatmeal with Berries", calories: 350, protein: 12, carbs: 60, fat: 8 }],
+//   },
+//   {
+//     time: "12:30 PM",
+//     name: "Lunch",
+//     items: [{ name: "Grilled Chicken Salad", calories: 420, protein: 35, carbs: 25, fat: 22 }],
+//   },
+//   {
+//     time: "7:00 PM",
+//     name: "Dinner",
+//     items: [],
+//   },
+// ]
+
+const meals = await getFoodItems();
 
 export default function DailyLog() {
   return (

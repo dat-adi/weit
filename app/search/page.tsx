@@ -1,21 +1,26 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Bot, SearchIcon } from "lucide-react"
 import Link from "next/link"
 
-const suggestions = [
-  { id: 1, name: "Grilled Chicken Breast", calories: 165, protein: 31, carbs: 0, fat: 3.6 },
-  { id: 2, name: "Quinoa Bowl", calories: 222, protein: 8, carbs: 39, fat: 3.6 },
-  { id: 3, name: "Salmon Fillet", calories: 208, protein: 22, carbs: 0, fat: 13 },
-]
-
 export default function SearchPage() {
   const [query, setQuery] = useState("")
   const [hasSearched, setHasSearched] = useState(false)
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      const response = await fetch("http://127.0.0.1:8000/foods");
+      const data = await response.json();
+      setSuggestions(data);
+    };
+
+    fetchSuggestions();
+  }, []);
 
   return (
     <div className="p-6 max-w-4xl mx-auto">

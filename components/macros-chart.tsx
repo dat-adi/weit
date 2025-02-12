@@ -2,33 +2,33 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 import { Card, CardContent } from "@/components/ui/card"
+import { getMacros } from "@/services/api";
 
-const data = [
-  {
-    name: "Protein",
-    value: 30,
-    grams: 95,
-    target: 120,
-    color: "#D1623F",
-    calories: 380,
-  },
-  {
-    name: "Carbs",
-    value: 50,
-    grams: 158,
-    target: 250,
-    color: "#2563eb",
-    calories: 632,
-  },
-  {
-    name: "Fat",
-    value: 20,
-    grams: 28,
-    target: 70,
-    color: "#16a34a",
-    calories: 252,
-  },
-]
+// const data = [
+//   {
+//     name: "Protein",
+//     value: 30,
+//     grams: 95,
+//     target: 120,
+//     color: "#D1623F",
+//   },
+//   {
+//     name: "Carbs",
+//     value: 50,
+//     grams: 158,
+//     target: 250,
+//     color: "#2563eb",
+//   },
+//   {
+//     name: "Fat",
+//     value: 20,
+//     grams: 28,
+//     target: 70,
+//     color: "#16a34a",
+//   },
+// ]
+
+const data = await getMacros();
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -39,7 +39,6 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="text-sm text-muted-foreground">
           {data.value}% ({data.grams}g / {data.target}g)
         </p>
-        <p className="text-sm text-muted-foreground">{data.calories} calories</p>
       </div>
     )
   }
@@ -86,9 +85,6 @@ export function MacrosChart() {
           <Card key={macro.name}>
             <CardContent className="pt-6">
               <MacroMetric label={macro.name} current={macro.grams} target={macro.target} color={macro.color} />
-              <div className="mt-2 text-xs text-muted-foreground">
-                {macro.calories} calories ({Math.round((macro.calories / totalCalories) * 100)}%)
-              </div>
             </CardContent>
           </Card>
         ))}
